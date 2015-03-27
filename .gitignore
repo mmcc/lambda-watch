@@ -26,3 +26,11 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
+
+*.DS_Store
+
+# Configuration file
+config.json
+
+# Built Zip
+*.zip
