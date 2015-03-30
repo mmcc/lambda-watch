@@ -3,25 +3,29 @@ var zc = require('zencoder')(config.api_key);
 
 function EventHandler(event, context) {
   this.context = context;
-  this.bucket = event.Records[0].s3.bucket.name;
+
+  this.outputBucket = config.outputBucket;
+
+  this.inputBucket = event.Records[0].s3.bucket.name;
   this.key = event.Records[0].s3.object.key;
 
+  this.filename = key.replace(/\.[^/.]+$/, "");
   this.submitZencoderRequest();
 }
 
 EventHandler.prototype.createRequestBody = function() {
   var request = {
-    input: 's3://'+ this.bucket +'/'+ this.key,
+    input: 's3://'+ this.inputBucket +'/'+ this.key,
     outputs: [
       {
         label: 'mp4',
         width: 540,
-        url: 's3://'+ this.bucket +'/outputs/'+ this.key +'/'+ this.key +'.mp4'
+        url: 's3://'+ this.outputBucket +'/'+ this.filename +'.mp4'
       },
       {
         label: 'webm',
         width: 540,
-        url: 's3://'+ this.bucket +'/outputs/'+ this.key +'/'+ this.key +'.webm'
+        url: 's3://'+ this.outputBucket +'/' + this.filename +'.webm'
       }
     ]
   };
@@ -45,3 +49,4 @@ EventHandler.prototype.submitZencoderRequest = function() {
 exports.handler = function(event, context) {
   return new EventHandler(event, context);
 };
+

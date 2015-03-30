@@ -1,3 +1,4 @@
 {
-  "api_key": "ZENCODER_API_KEY"
+  "api_key": "ZENCODER_API_KEY",
+  "output_bucket": "name.of.output.bucket"
 }
